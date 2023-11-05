@@ -1,0 +1,3 @@
+export enum CONTRACT_ADDRESS {
+  USERS = "0x45DF5cd3b381062f8DF3daeBc057Da9BEFfeef67",
+}
