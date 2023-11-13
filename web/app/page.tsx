@@ -109,7 +109,7 @@ export default function Home() {
             </div>
             {/*Right Col*/}
             <div className="w-full md:w-3/5 py-6 text-center">
-              <img className="w-full md:w-4/5 z-50" src="hero.png" />
+              <img className="w-full md:w-4/5 z-50" src="hero.png" alt="right"/>
             </div>
           </div>
         </div>
