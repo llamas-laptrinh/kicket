@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import MainMenu from "../menu";
-import Loader from "../Loader";
+import Loader from "../loader";
 
 type PageLayoutProps = {
   onBack?: () => void;
@@ -21,21 +21,6 @@ export default function PageLayout({
     <>
       <MainMenu />
       <div className="flex header place-content-between">
-        {/* <svg
-          onClick={onBack}
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6 hover:opacity-20 cursor-pointer"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-          />
-        </svg> */}
         <span />
         <svg
           id="btn"
@@ -60,6 +45,7 @@ export default function PageLayout({
       {buttonTitle && (
         <div className="action mt-4">
           <button
+            data-modal-toggle="select-modal"
             onClick={onButtonClick}
             className="px-6 py-2 text-teal-100 rounded bg-gradient-to-r from-teal-600 to-teal-400 bg-cyan-500 shadow-lg shadow-cyan-500/50"
           >

@@ -1,3 +1,4 @@
+"use client";
 import ReviewStar from "@/app/components/reviewStar";
 import {
   ChevronRightIcon,
@@ -12,41 +13,51 @@ import React from "react";
 
 import Link from "next/link";
 import PageLayout from "@/app/components/layouts/pageLayout";
+import Modal from "@/app/components/modal";
+
+import { create } from "../action";
+import { useFormState } from "@/app/utils/useForm";
 
 const dummyData = [
   {
     id: "0",
     icon: CalendarDaysIcon,
-    nextHref: "",
+    nextHref: "#",
     options: [21, 22, 23, 24, 25],
     isShowMore: true,
   },
   {
     id: "1",
     icon: ClockIcon,
-    nextHref: "",
+    nextHref: "#",
     options: ["12:00", "13:00", "16:00"],
     isShowMore: true,
   },
   {
     id: "2",
     icon: MapPinIcon,
-    nextHref: "",
+    nextHref: "#",
     options: ["HCMC", "HN", "DN", "HUE", "VP"],
     isShowMore: true,
   },
   {
     id: "3",
     icon: CurrencyDollarIcon,
-    nextHref: "",
+    nextHref: "#",
     options: [100],
     isShowMore: false,
   },
 ];
-
+const initialState = {
+  message: null,
+};
 export default function Detail() {
+  const [state, action] = useFormState(create, initialState);
+  console.log(state);
+
   return (
     <PageLayout title="Ticket Detail" buttonTitle="Pay">
+      <Modal action={action} />
       <div className="ticket-content flex">
         <div className="left-content w-1/2">
           <Image
