@@ -15,29 +15,31 @@ class Kicket {
     );
   }
 
-  public loadContract(contractAddress: string, abi: any) {
+  protected loadContract(contractAddress: string, abi: any) {
     return new ethers.Contract(contractAddress, abi, this.wallet);
   }
 }
 class KicketNFT extends Kicket {
-  contract;
+  private contract;
   constructor() {
     super();
     this.contract = this.loadContract(CONTRACT_ADDRESS.NFT, nftABI);
   }
   async mintNFT(address: string, metaDataURI: string) {
-    const mint = await this.contract.mintNFT(address, metaDataURI);
+    console.log("address", address);
+    const mint = await this.contract.mintNftTo(address, metaDataURI);
     const tx = await mint.wait();
+    console.log(tx);
+    return tx;
   }
   verifyNFT() {}
-  generateMetadata(): metaDataType {
+  generateMetadata(name: string, description: string): metaDataType {
     return {
-      description:
-        "Friendly OpenSea Creature that enjoys long swims in the ocean.",
+      description,
       external_url: "https://openseacreatures.io/3",
       image:
-        "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png",
-      name: "Dave Starbelly",
+        "https://raw.githubusercontent.com/llamas-laptrinh/kicket/main/web/public/ticket.png",
+      name,
       attributes: [],
     };
   }

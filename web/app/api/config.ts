@@ -1,0 +1,11 @@
+export const SHYFT_API_KEY = "";
+export const NET_WORK = "devnet";
+export const PINATA_API_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYzY5MWI0OC02YWVkLTQ2YWQtYWNmNi0wY2RkZDc5OGJlZTEiLCJlbWFpbCI6ImRhbmd0cnVuZ2R1YzUxQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI2Mzg3ZTUyMWU5MDZlNjE3YWE0NyIsInNjb3BlZEtleVNlY3JldCI6IjRhMGZlMzU5NWQ3ZDVlOGY2ZTE2YmY2YTViYzBjOWE3ODYyYjI0NzgwZjc1NWVhNDgxYTY0ZWI0N2E3ODBkZjYiLCJpYXQiOjE2OTY5Mzk2MzV9.oKv1TM34pxeAIN_0vC58Y3jrziesZo3ZhnSod27r6cc";
+export const PINATA_GATEWAY_KEY = "";
+
+export const PINATA_ADMIN_API_KEY = "";
+
+export const getPinataUri = (CID: string) => {
+  return `https://lavender-cautious-ant-106.mypinata.cloud/ipfs/${CID}?pinataGatewayToken=${PINATA_GATEWAY_KEY}`;
+};

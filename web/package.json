@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "axios": "^1.6.2",
     "caver-js": "^1.11.0",
     "ethers": "^6.8.1",
     "next": "13.5.6",
