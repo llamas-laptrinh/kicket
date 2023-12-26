@@ -1,16 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
+  env: {},
   reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    appDir: true,
+  },
+  eslint: {
+    dirs: ['app'],
+  },
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*",
-      },
+    domains: [
+      'static.wixstatic.com',
+      'image.lexica.art',
+      'storage.googleapis.com',
     ],
+    formats: ['image/webp'],
   },
 };
 
