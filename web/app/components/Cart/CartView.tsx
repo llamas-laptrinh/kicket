@@ -9,58 +9,61 @@ import { Spinner } from 'flowbite-react';
 import { currentCart } from '@wix/ecom';
 
 export const CartView = ({ layout = 'mini' }: { layout?: 'full' | 'mini' }) => {
-  const wixClient = useWixClient();
+  // const wixClient = useWixClient();
   const { closeSidebar, openModalNotPremium } = useUI();
   const { data, isLoading } = useCart();
   const [redirecting, setRedirecting] = useState<boolean>(false);
   const subTotal = formatPrice(
     data && {
-      amount:
-        data.lineItems?.reduce((acc, item) => {
-          return (
-            acc +
-            Number.parseFloat(item.price?.amount ?? '0') * (item.quantity ?? 0)
-          );
-        }, 0) ?? 0,
-      currencyCode: data.currency,
+      amount: 0,
+      // data.lineItems?.reduce((acc, item) => {
+      //   return (
+      //     acc +
+      //     Number.parseFloat(item.price?.amount ?? '0') * (item.quantity ?? 0)
+      //   );
+      // }, 0) ?? 0,
+      currencyCode: 'data.currency',
     }
   );
 
-  const goToCheckout = useCallback(async () => {
-    closeSidebar();
-    setRedirecting(true);
-    try {
-      const checkout =
-        await wixClient.currentCart.createCheckoutFromCurrentCart({
-          channelType: currentCart.ChannelType.WEB,
-        });
-      const { redirectSession } =
-        await wixClient.redirects.createRedirectSession({
-          ecomCheckout: { checkoutId: checkout.checkoutId },
-          callbacks: {
-            postFlowUrl: window.location.origin,
-            thankYouPageUrl: `${window.location.origin}/stores-success`,
-            cartPageUrl: `${window.location.origin}/cart`,
-          },
-        });
-      if (redirectSession?.fullUrl) {
-        window.location.href = redirectSession.fullUrl;
-      }
-    } catch (e: any) {
-      if (
-        e.details.applicationError.code ===
-        'SITE_MUST_ACCEPT_PAYMENTS_TO_CREATE_CHECKOUT'
-      ) {
-        openModalNotPremium();
-      }
-      setRedirecting(false);
-    }
-  }, [
-    closeSidebar,
-    openModalNotPremium,
-    wixClient.currentCart,
-    wixClient.redirects,
-  ]);
+  const goToCheckout = useCallback(
+    async () => {
+      closeSidebar();
+      setRedirecting(true);
+      // try {
+      //   const checkout =
+      //     await wixClient.currentCart.createCheckoutFromCurrentCart({
+      //       channelType: currentCart.ChannelType.WEB,
+      //     });
+      //   const { redirectSession } =
+      //     await wixClient.redirects.createRedirectSession({
+      //       ecomCheckout: { checkoutId: checkout.checkoutId },
+      //       callbacks: {
+      //         postFlowUrl: window.location.origin,
+      //         thankYouPageUrl: `${window.location.origin}/stores-success`,
+      //         cartPageUrl: `${window.location.origin}/cart`,
+      //       },
+      //     });
+      //   if (redirectSession?.fullUrl) {
+      //     window.location.href = redirectSession.fullUrl;
+      //   }
+      // } catch (e: any) {
+      //   if (
+      //     e.details.applicationError.code ===
+      //     'SITE_MUST_ACCEPT_PAYMENTS_TO_CREATE_CHECKOUT'
+      //   ) {
+      //     openModalNotPremium();
+      //   }
+      //   setRedirecting(false);
+      // }
+    },
+    [
+      // closeSidebar,
+      // openModalNotPremium,
+      // wixClient.currentCart,
+      // wixClient.redirects,
+    ]
+  );
 
   const isMini = layout === 'mini';
   return (
@@ -70,7 +73,7 @@ export const CartView = ({ layout = 'mini' }: { layout?: 'full' | 'mini' }) => {
           <Spinner aria-label="Loading Cart" />
         </div>
       ) : null}
-      {!isLoading && data?.lineItems?.length! > 0 ? (
+      {/* {!isLoading && data?.lineItems?.length! > 0 ? (
         <div className={`${!isMini ? 'max-w-6xl mx-auto' : ''}`}>
           <div className="flex-1">
             <div className="relative">
@@ -134,32 +137,32 @@ export const CartView = ({ layout = 'mini' }: { layout?: 'full' | 'mini' }) => {
             </div>
           </div>
         </div>
-      ) : (
-        <div className="flex-1 px-4 flex flex-col justify-center items-center">
-          <span className="border border-dashed border-primary rounded-full flex items-center justify-center w-16 h-16 p-12 text-secondary">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-              ></path>
-            </svg>
-          </span>
-          <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
-            Your cart is empty
-          </h2>
-          <p className="text-accent-3 px-10 text-center pt-2">
-            Add products to your cart in <a href="/shop">here</a>
-          </p>
-        </div>
-      )}
+      ) : ( */}
+      <div className="flex-1 px-4 flex flex-col justify-center items-center">
+        <span className="border border-dashed border-primary rounded-full flex items-center justify-center w-16 h-16 p-12 text-secondary">
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+            ></path>
+          </svg>
+        </span>
+        <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
+          Your cart is empty
+        </h2>
+        <p className="text-accent-3 px-10 text-center pt-2">
+          Add products to your cart in <a href="/shop">here</a>
+        </p>
+      </div>
+      {/* )} */}
     </>
   );
 };
