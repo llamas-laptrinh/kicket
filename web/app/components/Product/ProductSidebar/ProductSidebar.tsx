@@ -180,8 +180,8 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
       {!isAvailableForPurchase ? (
         <div>
           <BackInStockFormModal
-            product={product}
-            variantId={selectedVariant._id}
+          // product={product}
+          // variantId={selectedVariant._id}
           />
           <button
             data-testid={testIds.PRODUCT_DETAILS.ADD_TO_CART_CTA}

@@ -128,6 +128,6 @@
 
 import React from 'react';
 
-export default function BackInStockFormModal() {
+export function BackInStockFormModal() {
   return <div>BackInStockFormModal</div>;
 }

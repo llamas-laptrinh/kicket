@@ -6,5 +6,5 @@ export const useCart = () => {
   // return useQuery(['cart'], () => wixClient.currentCart.getCurrentCart(), {
   //   retry: false,
   // });
-  return { data: [], isLoading: false };
+  return { data: { lineItems: [] }, isLoading: false };
 };
