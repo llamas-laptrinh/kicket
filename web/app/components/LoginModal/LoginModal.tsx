@@ -87,37 +87,37 @@ export const LoginModal = () => {
       });
     }
 
-    if (response.loginState === LoginState.SUCCESS) {
-      const tokens = await wixClient.auth.getMemberTokensForDirectLogin(
-        response.data.sessionToken!
-      );
-      Cookies.set(WIX_REFRESH_TOKEN, JSON.stringify(tokens.refreshToken), {
-        expires: 2,
-      });
-      wixClient.auth.setTokens(tokens);
-      closeModal();
-      return;
-    }
+    // if (response.loginState === LoginState.SUCCESS) {
+    //   const tokens = await wixClient.auth.getMemberTokensForDirectLogin(
+    //     response.data.sessionToken!
+    //   );
+    //   Cookies.set(WIX_REFRESH_TOKEN, JSON.stringify(tokens.refreshToken), {
+    //     expires: 2,
+    //   });
+    //   wixClient.auth.setTokens(tokens);
+    //   closeModal();
+    //   return;
+    // }
 
-    if (response.loginState === LoginState.OWNER_APPROVAL_REQUIRED) {
-      setPending({ message: 'Your account is pending approval', state: true });
-    } else if (response.loginState === LoginState.EMAIL_VERIFICATION_REQUIRED) {
-      setState(State.EMAIL_VERIFICATION);
-    } else if (response.loginState === LoginState.FAILURE) {
-      if (response.errorCode === 'invalidPassword') {
-        setPasswordInvalid(true);
-      } else if (
-        response.errorCode === 'invalidEmail' ||
-        response.errorCode === 'emailAlreadyExists'
-      ) {
-        setEmailInvalid(true);
-      } else if (response.errorCode === 'resetPassword') {
-        setPending({
-          message: 'Your password requires reset',
-          state: true,
-        });
-      }
-    }
+    // if (response.loginState === LoginState.OWNER_APPROVAL_REQUIRED) {
+    //   setPending({ message: 'Your account is pending approval', state: true });
+    // } else if (response.loginState === LoginState.EMAIL_VERIFICATION_REQUIRED) {
+    //   setState(State.EMAIL_VERIFICATION);
+    // } else if (response.loginState === LoginState.FAILURE) {
+    //   if (response.errorCode === 'invalidPassword') {
+    //     setPasswordInvalid(true);
+    //   } else if (
+    //     response.errorCode === 'invalidEmail' ||
+    //     response.errorCode === 'emailAlreadyExists'
+    //   ) {
+    //     setEmailInvalid(true);
+    //   } else if (response.errorCode === 'resetPassword') {
+    //     setPending({
+    //       message: 'Your password requires reset',
+    //       state: true,
+    //     });
+    //   }
+    // }
     captchaRef.current?.reset();
     setLoading(false);
   };

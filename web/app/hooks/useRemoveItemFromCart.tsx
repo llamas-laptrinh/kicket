@@ -16,5 +16,6 @@ export const useRemoveItemFromCart = () => {
 };
 
 async function removeItemFromCart(wixClient: WixClient, itemId: string) {
-  return wixClient.currentCart.removeLineItemsFromCurrentCart([itemId]);
+  // return wixClient.currentCart.removeLineItemsFromCurrentCart([itemId]);
+  return { cart: {} };
 }

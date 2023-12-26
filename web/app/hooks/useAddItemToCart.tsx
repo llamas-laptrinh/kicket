@@ -21,15 +21,15 @@ async function addItemFromCart(
   wixClient: WixClient,
   item: currentCart.LineItem
 ) {
-  const data = await wixClient.currentCart.addToCurrentCart({
-    lineItems: [item],
-  });
-  if (!data?.cart?.overrideCheckoutUrl) {
-    void wixClient.currentCart.updateCurrentCart({
-      cartInfo: {
-        overrideCheckoutUrl: `${window.location.origin}/api/redirect-to-checkout?checkoutId={checkoutId}`,
-      },
-    });
-  }
-  return data;
+  // const data = await wixClient.currentCart.addToCurrentCart({
+  //   lineItems: [item],
+  // });
+  // if (!data?.cart?.overrideCheckoutUrl) {
+  //   void wixClient.currentCart.updateCurrentCart({
+  //     cartInfo: {
+  //       overrideCheckoutUrl: `${window.location.origin}/api/redirect-to-checkout?checkoutId={checkoutId}`,
+  //     },
+  //   });
+  // }
+  return { cart: {} };
 }

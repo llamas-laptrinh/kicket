@@ -37,12 +37,25 @@ const client = {
   checkout: typeof checkout,
   redirects: typeof redirects,
   auth: {
-    loggedIn: () => {
+    setTokens: async (tokens: any) => {},
+    login: async ({ email, password }: any) => {},
+    register: async ({
+      email,
+      password,
+      captchaTokens: { recaptchaToken: captcha },
+      profile: { nickname: username },
+    }: any) => {
+      return { loginState: 'SUCCESS', data: {} };
+    },
+    loggedIn: async () => {
       return false;
     },
     logout: (url: string) => {
       return { logoutUrl: '' };
     },
+    sendPasswordResetEmail: async (email: string, host: string) => {},
+    processVerification: async ({ verificationCode }: any) => {},
+    captchaVisibleSiteKey: '',
   },
 };
 

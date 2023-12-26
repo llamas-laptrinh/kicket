@@ -177,41 +177,41 @@ export function TicketsTable({
             }),
         };
       });
-    try {
-      const { _id: id } = await wixClient.checkout.createReservation(
-        event._id!,
-        {
-          ticketQuantities,
-        }
-      );
-      try {
-        setRedirecting(true);
-        const { redirectSession } =
-          await wixClient.redirects.createRedirectSession({
-            eventsCheckout: { reservationId: id, eventSlug: event.slug! },
-            callbacks: {
-              postFlowUrl: window.location.origin,
-              thankYouPageUrl: `${window.location.origin}/events-success`,
-            },
-          });
-        if (id) {
-          window.location.href = redirectSession!.fullUrl!;
-        }
-      } catch (e) {
-        console.error(e);
-        setRedirecting(false);
-      }
-    } catch (e: any) {
-      if (
-        e.details.applicationError.data.details.details.error_key ===
-        'NO_PAYMENT_METHOD_CONFIGURED'
-      ) {
-        setError('No payment method configured');
-      } else {
-        setError('Something went wrong');
-      }
-      throw e;
-    }
+    // try {
+    //   const { _id: id } = await wixClient.checkout.createReservation(
+    //     event._id!,
+    //     {
+    //       ticketQuantities,
+    //     }
+    //   );
+    //   try {
+    //     setRedirecting(true);
+    //     const { redirectSession } =
+    //       await wixClient.redirects.createRedirectSession({
+    //         eventsCheckout: { reservationId: id, eventSlug: event.slug! },
+    //         callbacks: {
+    //           postFlowUrl: window.location.origin,
+    //           thankYouPageUrl: `${window.location.origin}/events-success`,
+    //         },
+    //       });
+    //     if (id) {
+    //       window.location.href = redirectSession!.fullUrl!;
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //     setRedirecting(false);
+    //   }
+    // } catch (e: any) {
+    //   if (
+    //     e.details.applicationError.data.details.details.error_key ===
+    //     'NO_PAYMENT_METHOD_CONFIGURED'
+    //   ) {
+    //     setError('No payment method configured');
+    //   } else {
+    //     setError('Something went wrong');
+    //   }
+    //   throw e;
+    // }
   };
 
   return (

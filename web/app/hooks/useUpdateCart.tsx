@@ -21,5 +21,6 @@ async function updateLineItemQuantity(
   wixClient: WixClient,
   item: currentCart.LineItemQuantityUpdate
 ) {
-  return wixClient.currentCart.updateCurrentCartLineItemQuantity([item]);
+  // return wixClient.currentCart.updateCurrentCartLineItemQuantity([item]);
+  return { cart: {} };
 }
