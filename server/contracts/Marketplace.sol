@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
+// import "vrc25/contracts/VRC25.sol";
 //Console functions to help debug the smart contract just like in Javascript
 import "hardhat/console.sol";
 //OpenZeppelin's NFT Standard Contracts. We will extend functions from this in our implementation
