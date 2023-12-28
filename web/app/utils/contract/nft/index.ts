@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import axios from 'axios';
+import abi from '@app/utils/contract/abi/NFTMarketplace.json';
 
 // const provider = new ethers.BrowserProvider(window.ethereum);
 // const signer =  provider.getSigner();
@@ -7,7 +8,11 @@ import axios from 'axios';
 export default class NftFactory {
   protected contract: ethers.Contract;
   constructor(signer: ethers.ContractRunner) {
-    this.contract = new ethers.Contract('', '', signer);
+    this.contract = new ethers.Contract(
+      '0xC45f83120F848D047f94cC1883DA95F78fde867d',
+      abi.abi,
+      signer
+    );
   }
   mint() {}
   async getAllNfts() {

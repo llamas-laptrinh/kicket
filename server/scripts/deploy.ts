@@ -1,6 +1,17 @@
 import { ethers } from "hardhat";
 
-async function main() {
+async function deployContractMarketPlace() {
+  const [signer] = await ethers.getSigners();
+  const martketPlace = await ethers.deployContract("NFTMarketplace", [], {
+    gasLimit: 40000000,
+    signer,
+  });
+  await martketPlace.waitForDeployment();
+  console.log("deployed contract successfully", martketPlace.target);
+  return martketPlace.target;
+}
+
+async function deployLockContract() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
   const unlockTime = currentTimestampInSeconds + 60;
 
@@ -17,6 +28,9 @@ async function main() {
       lockedAmount
     )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
   );
+}
+async function main() {
+  await deployContractMarketPlace();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
