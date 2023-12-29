@@ -5,6 +5,7 @@ async function deployContractMarketPlace() {
   const martketPlace = await ethers.deployContract("NFTMarketplace", [], {
     gasLimit: 40000000,
     signer,
+    nonce: await signer.getNonce(),
   });
   await martketPlace.waitForDeployment();
   console.log("deployed contract successfully", martketPlace.target);
