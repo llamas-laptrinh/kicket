@@ -25,11 +25,11 @@ const Header = () => (
           </div>
         </div>
 
-        <div>
+        <div className="hidden lg:block">
           <Login />
         </div>
 
-        <div>
+        <div className="hidden lg:block">
           <CartBag />
         </div>
         <div>

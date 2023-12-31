@@ -10,7 +10,7 @@ import { filterCollections } from '@app/common/filters';
 
 export default function Filter() {
   return (
-    <section className="flex gap-4 items-center px-4">
+    <section className="flex gap-4 items-center px-4 flex-wrap">
       <Button color="gray">
         <IoFilterSharp className="h-4 w-4" />
       </Button>
@@ -19,7 +19,7 @@ export default function Filter() {
           return <Dropdown.Item key={key}>{value}</Dropdown.Item>;
         })}
       </Dropdown>
-      <div className="flex-1">
+      <div className="lg:flex-1 w-full">
         <SearchBar />
       </div>
 
@@ -28,7 +28,7 @@ export default function Filter() {
           return <Dropdown.Item key={key}>{value}</Dropdown.Item>;
         })}
       </Dropdown>
-      <Button.Group>
+      <Button.Group className="hidden lg:block">
         <Button color="gray">
           <MdOutlineGridOn className="h-4 w-4" />
         </Button>

@@ -2,7 +2,11 @@ import { shorterAddress } from '@app/utils/addrress-formatter';
 import Image from 'next/image';
 import React from 'react';
 
-export default function ProfileHeader() {
+type ProfileHeaderProps = {
+  address: string;
+};
+
+export default function ProfileHeader({ address }: ProfileHeaderProps) {
   return (
     <section>
       <div className="image-container pb-6 relative">
@@ -25,7 +29,7 @@ export default function ProfileHeader() {
       </div>
       <div className="profile-info p-4">
         <h2>UserNamed</h2>
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           <Image
             width={64}
             height={64}
@@ -33,8 +37,8 @@ export default function ProfileHeader() {
             src="/images/viction-token.webp"
             alt="viction token"
           />
-          <p>{shorterAddress('0x3e45A0808D74a6Bb380A431660516559FE6ae988')}</p>
-          <p className="text-gray-400">Joined October 2023</p>
+          <p>{shorterAddress(address)}</p>
+          <p className="text-gray-400 hidden lg:block">Joined October 2023</p>
         </div>
       </div>
     </section>

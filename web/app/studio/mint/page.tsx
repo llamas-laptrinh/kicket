@@ -5,6 +5,10 @@ import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { FiUpload } from 'react-icons/fi';
 import Image from 'next/image';
+import MintNftAPI from './mintAPIs';
+import { getPinataUri } from '@app/utils/getPinataUri';
+import NftFactory from '@app/utils/contract/nft';
+import { getProvier } from '@app/utils/contract/getProvider';
 
 type Traits = {
   type: string;
@@ -50,7 +54,7 @@ export default function MintNFT() {
     }
   };
 
-  const handleCreateNFT = () => {
+  const handleCreateNFT = async () => {
     if (nftName === '') {
       setHelperText({ ...helperText, nftName: 'NFT Name is required' });
     }
@@ -59,6 +63,21 @@ export default function MintNFT() {
         ...helperText,
         nftSupply: 'NFT Supply is required and Greater 0',
       });
+    }
+    const mint = new MintNftAPI();
+    const res = await mint.uploadImage(selectedFile);
+    const imageUri = getPinataUri(res.data.data.IpfsHash);
+    const metadataUri = await mint.createMetadataUri({
+      description: nftDescription,
+      external_url: nftExternalLink,
+      image: imageUri,
+      name: nftName,
+      attributes: traits,
+    });
+    const tokenURI = getPinataUri(metadataUri.data.data.IpfsHash);
+    const { signer } = await getProvier();
+    if (signer) {
+      new NftFactory(signer).mint();
     }
   };
   return (
@@ -124,7 +143,7 @@ export default function MintNFT() {
           information.
         </p>
         <div className="flex">
-          <div className="basis-1/2 p-6">
+          <div className="lg:basis-1/2 w-full p-6">
             <label
               htmlFor="media"
               className="relative flex flex-col justify-center items-center border-2 border-dashed border-gray rounded w-full h-96 hover:bg-gray-100"
@@ -201,7 +220,7 @@ export default function MintNFT() {
               )}
             </label>
           </div>
-          <div className="basis-1/2">
+          <div className="lg:basis-1/2 w-full">
             <div className="form w-full px-12">
               <div className="mb-4">
                 <div className="mb-2 block">

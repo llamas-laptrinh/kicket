@@ -44,10 +44,7 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     //The first time a token is created, it is listed here
-    function createToken(
-        string memory tokenURI,
-        uint256 price
-    ) public payable returns (uint) {
+    function createToken(string memory tokenURI) public payable returns (uint) {
         //Increment the tokenId counter, which is keeping track of the number of minted NFTs
         _tokenIds += 1;
         uint256 newTokenId = _tokenIds;
@@ -59,9 +56,18 @@ contract NFTMarketplace is ERC721URIStorage {
         _setTokenURI(newTokenId, tokenURI);
 
         //Helper function to update Global variables and emit an event
-        createListedToken(newTokenId, price);
+        // createListedToken(newTokenId, price);
 
         return newTokenId;
+    }
+
+    function listToken(uint256 tokenId, uint256 price) public payable {
+        createListedToken(tokenId, price);
+    }
+
+    function unListToken(uint256 tokenId) public payable {
+        //Update the mapping of tokenId's to Token details, useful for retrieval functions
+        idToListedToken[tokenId].currentlyListed = false;
     }
 
     function createListedToken(uint256 tokenId, uint256 price) private {

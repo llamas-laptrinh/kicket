@@ -41,7 +41,20 @@ export default class NftFactory {
   }
   async getNftData(tokenId: string) {}
   async getAllMyNfts() {
-    return await this.contract.getMyNFTs();
+    const transaction = await this.contract.getMyNFTs();
+    const items = await Promise.all(
+      transaction.map(async (i: any) => {
+        let tokenURI = await this.contract.tokenURI(i.tokenId);
+        console.log('getting this tokenUri', tokenURI);
+        // tokenURI = GetIpfsUrlFromPinata(tokenURI);
+        let meta: any = await axios.get(tokenURI);
+        meta = meta.data;
+        console.log('meta', meta);
+
+        return mapMetaToProduct(i, meta);
+      })
+    );
+    return items;
   }
-  async listToSale(tokenId: string) {}
+  async listToSale(tokenId: string, price: string) {}
 }
