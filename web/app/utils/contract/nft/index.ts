@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import axios from 'axios';
 import abi from '@app/utils/contract/abi/NFTMarketplace.json';
+import { mapMetaToProduct } from './mapper';
 
 // const provider = new ethers.BrowserProvider(window.ethereum);
 // const signer =  provider.getSigner();
@@ -20,25 +21,17 @@ export default class NftFactory {
     //Fetch all the details of every NFT from the contract and display
     const items = await Promise.all(
       transaction.map(async (i: any) => {
-        var tokenURI = await this.contract.tokenURI(i.tokenId);
+        let tokenURI = await this.contract.tokenURI(i.tokenId);
         console.log('getting this tokenUri', tokenURI);
         // tokenURI = GetIpfsUrlFromPinata(tokenURI);
         let meta: any = await axios.get(tokenURI);
         meta = meta.data;
+        console.log('meta', meta);
 
-        let price = ethers.formatUnits(i.price.toString(), 'ether');
-        let item = {
-          price,
-          tokenId: i.tokenId.toNumber(),
-          seller: i.seller,
-          owner: i.owner,
-          image: meta.image,
-          name: meta.name,
-          description: meta.description,
-        };
-        return item;
+        return mapMetaToProduct(i, meta);
       })
     );
+    return items;
   }
   async buyNFT(tokenId: string, salePrice: string) {
     let transaction = await this.contract.executeSale(tokenId, {

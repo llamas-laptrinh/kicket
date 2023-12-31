@@ -16,6 +16,12 @@ const nextConfig = {
       'storage.googleapis.com',
     ],
     formats: ['image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 

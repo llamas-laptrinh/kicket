@@ -10,8 +10,22 @@ import { allNFTs } from '@app/common/NFTs';
 import Image from 'next/image';
 import { BsThreeDots } from 'react-icons/bs';
 import ListModal from './ListModal';
+import NftFactory from '@app/utils/contract/nft';
+import { getProvier } from '@app/utils/contract/getProvider';
+
+const getMyNFTs = async () => {
+  const { signer } = await getProvier();
+  if (signer) {
+    const nftFactory = new NftFactory(signer);
+    const nft = await nftFactory.getAllNfts();
+    console.log('my nft', nft);
+
+    return nft;
+  }
+};
 
 export default function ProfileView() {
+  const [myNfts, setMyNfts] = React.useState<any[]>([]);
   const [isShow, setShow] = React.useState(false);
   const onToggleModal = () => {
     setShow((isShow) => !isShow);
@@ -27,6 +41,10 @@ export default function ProfileView() {
     console.log(amount, duration);
   };
 
+  React.useEffect(() => {
+    getMyNFTs().then((nfts) => setMyNfts(nfts || []));
+  }, []);
+
   return (
     <>
       <ListModal
@@ -37,11 +55,11 @@ export default function ProfileView() {
       <ProfileHeader />
       <Filter />
       <div className="content p-4">
-        <h2>{allNFTs.length} items</h2>
+        <h2>{myNfts.length} items</h2>
         <section className="my-4 border rounded p-2">
-          {allNFTs.length > 0 ? (
+          {myNfts.length > 0 ? (
             <div className="flex gap-4">
-              {allNFTs.map((nft) => {
+              {myNfts.map((nft) => {
                 return (
                   <div
                     className="border rounded-lg pt-2 text-white bg-black"

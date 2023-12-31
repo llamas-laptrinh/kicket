@@ -224,4 +224,9 @@ export const dummyEvents = [
   },
 ];
 
+export enum CURRENTCY_TYPE {
+  VIC = 'VIC',
+  USD = 'USD',
+}
+
 export const AVATAR_URL = 'https://api.dicebear.com/7.x/personas/png?seed=';
