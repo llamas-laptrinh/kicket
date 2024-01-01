@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import axios from 'axios';
 
 export async function POST(request: Request) {
@@ -13,14 +12,16 @@ export async function POST(request: Request) {
         },
       }
     );
-    return NextResponse.json({
-      status: 'success',
-      statusCode: 200,
-      data: res.data,
-    });
+    // return Response.json(
+    //   {
+    //     data: res.data,
+    //   },
+    //   { status: 200, statusText: 'success' }
+    // );
   } catch (error) {
-    return NextResponse.json({
-      error,
-    });
+    console.error(error);
+    // return Response.json({
+    //   error,
+    // });
   }
 }

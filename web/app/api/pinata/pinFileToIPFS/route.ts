@@ -1,20 +1,12 @@
-import Server from 'next/server';
 import axios from 'axios';
 
 export async function POST(request: Request) {
   const formData = await request.formData();
 
   const file = formData.get('file');
-  console.log('formData', JSON.stringify(file));
-  // const JWT = formData.get('JWT');
   if (!file) {
-    return Server.NextResponse.json(
-      { error: 'No files received.' },
-      { status: 400 }
-    );
+    return Response.json({ error: 'No files received.' }, { status: 400 });
   }
-
-  // formData.append('file', file);
 
   const pinataOptions = JSON.stringify({
     cidVersion: 0,
@@ -24,10 +16,8 @@ export async function POST(request: Request) {
   const pinataMetadata = JSON.stringify({
     name: `${new Date().getTime()}`,
   });
-  console.log('pinataMetadata', pinataMetadata);
 
   formData.append('pinataMetadata', pinataMetadata);
-  console.log('process.env.PINATA_API_KEY', process.env.PINATA_API_KEY);
 
   try {
     const res = await axios.post(
@@ -43,26 +33,18 @@ export async function POST(request: Request) {
     );
     console.log('res', res.data);
 
-    Response.json({
-      status: 'success',
-      statusCode: 200,
-      data: res.data,
-    });
-    // return Server.NextResponse.json({
-    //   // status: 'success',
-    //   // statusCode: 200,
-    //   data: res.data,
-    // });
-  } catch (error) {
-    Response.json({
-      status: 'fail',
-      statusCode: 500,
-      data: error,
-    });
-    // return Server.NextResponse.json({
-    //   status: 'fail',
-    //   statusCode: 500,
-    //   data: error,
-    // });
+    return Response.json(
+      {
+        data: res.data,
+      },
+      { status: 200, statusText: 'success' }
+    );
+  } catch (error: any) {
+    return Response.json(
+      {
+        data: error,
+      },
+      { status: 500, statusText: error.message }
+    );
   }
 }

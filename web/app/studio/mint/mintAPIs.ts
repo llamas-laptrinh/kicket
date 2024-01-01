@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { CREATE_METAD_ATA_URI, UPLOAD_IMAGE } from './endpoint';
+import { CREATE_METAD_ATA_URI, UN_PIN, UPLOAD_IMAGE } from './endpoint';
 
 export default class MintNftAPI {
   instance: AxiosInstance;
@@ -26,12 +26,16 @@ export default class MintNftAPI {
     });
   }
   unpinFile(ipfs: string) {
-    return this.instance.post(
-      CREATE_METAD_ATA_URI,
-      { ipfs },
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    try {
+      return this.instance.post(
+        UN_PIN,
+        { ipfs },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    } catch (error) {
+      console.log('unpinFile', error);
+    }
   }
 }

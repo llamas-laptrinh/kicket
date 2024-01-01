@@ -44,28 +44,46 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     //The first time a token is created, it is listed here
-    function createToken(string memory tokenURI) public payable returns (uint) {
+    function createToken(string memory tokenURI) public returns (uint) {
         //Increment the tokenId counter, which is keeping track of the number of minted NFTs
         _tokenIds += 1;
         uint256 newTokenId = _tokenIds;
 
         //Mint the NFT with tokenId newTokenId to the address who called createToken
         _safeMint(msg.sender, newTokenId);
-
+        // _mint(msg.sender, newTokenId);
         //Map the tokenId to the tokenURI (which is an IPFS URL with the NFT metadata)
         _setTokenURI(newTokenId, tokenURI);
 
         //Helper function to update Global variables and emit an event
         // createListedToken(newTokenId, price);
+        idToListedToken[newTokenId] = ListedToken(
+            newTokenId,
+            payable(address(this)),
+            payable(msg.sender),
+            0,
+            false
+        );
 
+        emit TokenListedSuccess(
+            newTokenId,
+            address(this),
+            msg.sender,
+            0,
+            false
+        );
         return newTokenId;
     }
+
+    fallback() external payable {}
+
+    receive() external payable {}
 
     function listToken(uint256 tokenId, uint256 price) public payable {
         createListedToken(tokenId, price);
     }
 
-    function unListToken(uint256 tokenId) public payable {
+    function unListToken(uint256 tokenId) public {
         //Update the mapping of tokenId's to Token details, useful for retrieval functions
         idToListedToken[tokenId].currentlyListed = false;
     }
@@ -77,13 +95,9 @@ contract NFTMarketplace is ERC721URIStorage {
         require(price > 0, "Make sure the price isn't negative");
 
         //Update the mapping of tokenId's to Token details, useful for retrieval functions
-        idToListedToken[tokenId] = ListedToken(
-            tokenId,
-            payable(address(this)),
-            payable(msg.sender),
-            price,
-            true
-        );
+
+        idToListedToken[tokenId].currentlyListed = true;
+        idToListedToken[tokenId].price = price;
 
         _transfer(msg.sender, address(this), tokenId);
         //Emit the event for successful transfer. The frontend parses this message and updates the end user
@@ -106,9 +120,11 @@ contract NFTMarketplace is ERC721URIStorage {
         //filter out currentlyListed == false over here
         for (uint i = 0; i < nftCount; i++) {
             uint currentId = i + 1;
-            ListedToken storage currentItem = idToListedToken[currentId];
-            tokens[currentIndex] = currentItem;
-            currentIndex += 1;
+            if (idToListedToken[currentId].currentlyListed) {
+                ListedToken storage currentItem = idToListedToken[currentId];
+                tokens[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
         }
         //the array 'tokens' has the list of all NFTs in the marketplace
         return tokens;

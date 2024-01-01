@@ -17,6 +17,7 @@ import { getPinataUri } from '@app/utils/getPinataUri';
 import NftFactory from '@app/utils/contract/nft';
 import { getProvier } from '@app/utils/contract/getProvider';
 import { toast } from 'react-toastify';
+import { uploadFile, uploadJson } from '@app/utils/pinata';
 
 type Traits = {
   type: string;
@@ -87,8 +88,8 @@ export default function MintNFT() {
     let fileIpfs = '';
     let metaIpfs = '';
     try {
-      const res = await mint.uploadImage(selectedFile);
-      fileIpfs = res.data.data.IpfsHash;
+      const res = await uploadFile(selectedFile);
+      fileIpfs = res.data.IpfsHash;
 
       if (!fileIpfs) {
         throw new Error('Pin File not found');
@@ -96,14 +97,14 @@ export default function MintNFT() {
 
       const imageUri = getPinataUri(fileIpfs);
 
-      const metadataUri = await mint.createMetadataUri({
+      const metadataUri = await uploadJson({
         description: nftDescription,
         external_url: nftExternalLink,
         image: imageUri,
         name: nftName,
         attributes: traits,
       });
-      metaIpfs = metadataUri.data.data.IpfsHash;
+      metaIpfs = metadataUri.data.IpfsHash;
 
       const tokenURI = getPinataUri(metaIpfs);
 
@@ -121,9 +122,8 @@ export default function MintNFT() {
     } catch (error: any) {
       toast.error(error.message);
       setLoading(false);
-      console.log(fileIpfs, metaIpfs);
-      await mint.unpinFile(fileIpfs);
-      await mint.unpinFile(metaIpfs);
+      mint.unpinFile(fileIpfs);
+      mint.unpinFile(metaIpfs);
     }
     setLoading(false);
   };
