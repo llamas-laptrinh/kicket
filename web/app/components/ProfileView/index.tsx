@@ -17,7 +17,7 @@ const getMyNFTs = async () => {
   const { signer } = await getProvier();
   if (signer) {
     const nftFactory = new NftFactory(signer);
-    const nft = await nftFactory.getAllNfts();
+    const nft = await nftFactory.getAllMyNfts();
     console.log('my nft', nft);
 
     return nft;

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import Server from 'next/server';
 import axios from 'axios';
 
 export async function POST(request: Request) {
@@ -9,9 +9,9 @@ export async function POST(request: Request) {
       {
         pinataContent: {
           name: body.name,
-          //   symbol: body.symbol,
           description: body.description,
           image: body.image,
+          external_url: body.external_url,
           attributes: body.attributes,
         },
         pinataMetadata: {
@@ -26,13 +26,13 @@ export async function POST(request: Request) {
         },
       }
     );
-    return NextResponse.json({
+    return Server.NextResponse.json({
       status: 'success',
       statusCode: 200,
       data: res.data,
     });
   } catch (error) {
-    return NextResponse.json({
+    return Server.NextResponse.json({
       error,
     });
   }

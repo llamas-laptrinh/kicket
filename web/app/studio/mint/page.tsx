@@ -1,6 +1,13 @@
 'use client';
 import React from 'react';
-import { Label, TextInput, Textarea, Button, Modal } from 'flowbite-react';
+import {
+  Label,
+  TextInput,
+  Textarea,
+  Button,
+  Modal,
+  Spinner,
+} from 'flowbite-react';
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { FiUpload } from 'react-icons/fi';
@@ -9,6 +16,7 @@ import MintNftAPI from './mintAPIs';
 import { getPinataUri } from '@app/utils/getPinataUri';
 import NftFactory from '@app/utils/contract/nft';
 import { getProvier } from '@app/utils/contract/getProvider';
+import { toast } from 'react-toastify';
 
 type Traits = {
   type: string;
@@ -16,6 +24,7 @@ type Traits = {
 };
 
 export default function MintNFT() {
+  const [isLoading, setLoading] = React.useState(false);
   const [traits, setTraits] = React.useState<Array<Traits>>([]);
   const [openModal, setOpenModal] = React.useState(false);
 
@@ -42,7 +51,7 @@ export default function MintNFT() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
-
+      console.log(file);
       setSelectedFile(file);
 
       // Use FileReader to read the file and generate a preview
@@ -55,6 +64,7 @@ export default function MintNFT() {
   };
 
   const handleCreateNFT = async () => {
+    setLoading(true);
     if (nftName === '') {
       setHelperText({ ...helperText, nftName: 'NFT Name is required' });
     }
@@ -64,21 +74,58 @@ export default function MintNFT() {
         nftSupply: 'NFT Supply is required and Greater 0',
       });
     }
-    const mint = new MintNftAPI();
-    const res = await mint.uploadImage(selectedFile);
-    const imageUri = getPinataUri(res.data.data.IpfsHash);
-    const metadataUri = await mint.createMetadataUri({
-      description: nftDescription,
-      external_url: nftExternalLink,
-      image: imageUri,
-      name: nftName,
-      attributes: traits,
-    });
-    const tokenURI = getPinataUri(metadataUri.data.data.IpfsHash);
-    const { signer } = await getProvier();
-    if (signer) {
-      new NftFactory(signer).mint();
+    const { signer, provider } = await getProvier();
+    const balance = await provider.getBalance(signer?.address || '');
+    console.log('balance: ', balance);
+
+    if (balance <= 1) {
+      toast.info('Balance not enough');
+      setLoading(false);
+      return;
     }
+    const mint = new MintNftAPI();
+    let fileIpfs = '';
+    let metaIpfs = '';
+    try {
+      const res = await mint.uploadImage(selectedFile);
+      fileIpfs = res.data.data.IpfsHash;
+
+      if (!fileIpfs) {
+        throw new Error('Pin File not found');
+      }
+
+      const imageUri = getPinataUri(fileIpfs);
+
+      const metadataUri = await mint.createMetadataUri({
+        description: nftDescription,
+        external_url: nftExternalLink,
+        image: imageUri,
+        name: nftName,
+        attributes: traits,
+      });
+      metaIpfs = metadataUri.data.data.IpfsHash;
+
+      const tokenURI = getPinataUri(metaIpfs);
+
+      if (!signer) {
+        toast.error('Signer not found');
+        setLoading(false);
+        return;
+      }
+
+      const data = await new NftFactory(signer).mint(tokenURI);
+      if (!data) {
+        throw new Error('Mint failed');
+      }
+      toast.success('Created NFT successfully!');
+    } catch (error: any) {
+      toast.error(error.message);
+      setLoading(false);
+      console.log(fileIpfs, metaIpfs);
+      await mint.unpinFile(fileIpfs);
+      await mint.unpinFile(metaIpfs);
+    }
+    setLoading(false);
   };
   return (
     <>
@@ -340,10 +387,18 @@ export default function MintNFT() {
               </div>
               <div className="flex justify-end">
                 <button
+                  disabled={isLoading}
                   onClick={handleCreateNFT}
                   className="w-full px-4 py-2 font-bold rounded bg-rose-500 text-white"
                 >
-                  Create
+                  {isLoading ? (
+                    <div className="flex justify-center items-center">
+                      <Spinner className="w-4 h-4 mx-2" />
+                      Minting
+                    </div>
+                  ) : (
+                    'Create'
+                  )}
                 </button>
               </div>
             </div>

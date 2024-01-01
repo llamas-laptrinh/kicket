@@ -10,12 +10,22 @@ export default class NftFactory {
   protected contract: ethers.Contract;
   constructor(signer: ethers.ContractRunner) {
     this.contract = new ethers.Contract(
-      '0xC45f83120F848D047f94cC1883DA95F78fde867d',
+      '0x838591F33023F5719F740458a499DD6B33af8B66',
       abi.abi,
       signer
     );
   }
-  mint() {}
+  async mint(tokenURI: string): Promise<boolean> {
+    try {
+      const tx = await this.contract.createToken(tokenURI, {
+        gasLimit: 40000000,
+      });
+      await tx.await();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   async getAllNfts() {
     let transaction = await this.contract.getAllNFTs();
     //Fetch all the details of every NFT from the contract and display

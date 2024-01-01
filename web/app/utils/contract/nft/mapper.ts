@@ -6,15 +6,15 @@ const mapMetaToProduct = (item: any, meta: any) => {
   return {
     seller: item.seller,
     owner: item.owner,
-    name: meta.name,
-    description: meta.description,
+    name: meta?.name,
+    description: meta?.description,
     currentlyListed: item.currentlyListed,
     id: Number(item.tokenId),
     collectionId: 'cyberpunk',
-    external_url: meta.external_url,
+    external_url: meta?.external_url,
     media: {
-      altText: meta.name,
-      url: meta.image,
+      altText: meta?.name,
+      url: meta?.image,
     },
     price: {
       formatted: {

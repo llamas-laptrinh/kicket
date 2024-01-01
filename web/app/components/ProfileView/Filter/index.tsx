@@ -28,7 +28,7 @@ export default function Filter() {
           return <Dropdown.Item key={key}>{value}</Dropdown.Item>;
         })}
       </Dropdown>
-      <Button.Group className="hidden lg:block">
+      <Button.Group className="xs:hidden">
         <Button color="gray">
           <MdOutlineGridOn className="h-4 w-4" />
         </Button>
