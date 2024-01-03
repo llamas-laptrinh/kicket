@@ -62,7 +62,7 @@ export const dummyProducts: products.Product[] = [
         {
           title: 'alchemyrefiner_alchemymagic',
           _id: '1',
-          image: { url: '/images/cyberpunk/alchemyrefiner_alchemymagic.jpeg' },
+          image: { url: '/images/cyberpunk/christmas.webp' },
         },
       ],
       mainMedia: {
@@ -86,7 +86,15 @@ export const dummyProducts: products.Product[] = [
     name: 'cYbErPuNK gAL: The Soft Touch',
     stock: { inStock: true },
     manageVariants: false,
+    additionalInfoSections: [{ title: 'CyberPunk #8968', description: '' }],
     media: {
+      items: [
+        {
+          title: 'christmas',
+          _id: '2',
+          image: { url: '/images/cyberpunk/christmas.web' },
+        },
+      ],
       mainMedia: {
         image: {
           url: '/images/cyberpunk/christmas.webp',

@@ -2,7 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createContext, ReactNode } from 'react';
 import { ManagedUIContext } from './context';
-import { createClient, OAuthStrategy } from '@wix/sdk';
+// import { createClient, OAuthStrategy } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import { currentCart, backInStockNotifications } from '@wix/ecom';
 import { wixEvents, checkout } from '@wix/events';
@@ -13,21 +13,21 @@ const queryClient = new QueryClient();
 
 const refreshToken = JSON.parse(Cookies.get(WIX_REFRESH_TOKEN) || '{}');
 
-const wixClient = createClient({
-  modules: {
-    products,
-    collections,
-    currentCart,
-    backInStockNotifications,
-    wixEvents,
-    checkout,
-    redirects,
-  },
-  auth: OAuthStrategy({
-    clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,
-    tokens: { refreshToken, accessToken: { value: '', expiresAt: 0 } },
-  }),
-});
+// const wixClient = createClient({
+//   modules: {
+//     products,
+//     collections,
+//     currentCart,
+//     backInStockNotifications,
+//     wixEvents,
+//     checkout,
+//     redirects,
+//   },
+//   auth: OAuthStrategy({
+//     clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,
+//     tokens: { refreshToken, accessToken: { value: '', expiresAt: 0 } },
+//   }),
+// });
 const client = {
   products: typeof products,
   collections: typeof collections,

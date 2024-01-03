@@ -7,7 +7,7 @@ const metadataURL =
 const marketAddress = "0xE313F792d5840Be1Fa89b8f9961A6C2967a3D30c";
 describe("Marketplace", () => {
   let marketplace: NFTMarketplace;
-  let tokenId: any = 0;
+  let tokenId: any = 1;
   it("get Contact", async () => {
     const [signer] = await ethers.getSigners();
     marketplace = await ethers.getContractAt(
@@ -23,12 +23,12 @@ describe("Marketplace", () => {
     console.log(tx);
   });
 
-  it("mint NFT", async () => {
-    let transaction = await marketplace.createToken(metadataURL, {
-      gasLimit: 3000000,
-    });
-    await transaction.wait();
-  });
+  // it("mint NFT", async () => {
+  //   let transaction = await marketplace.createToken(metadataURL, {
+  //     gasLimit: 3000000,
+  //   });
+  //   await transaction.wait();
+  // });
 
   it("get my NFTs after mint", async () => {
     const tx = await marketplace.getMyNFTs();

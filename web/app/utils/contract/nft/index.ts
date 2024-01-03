@@ -10,7 +10,7 @@ export default class NftFactory {
   protected contract: ethers.Contract;
   constructor(signer: ethers.ContractRunner) {
     this.contract = new ethers.Contract(
-      '0x22EadaAed94BF8EB79aD6fF97d961fC2a80373Ae',
+      '0xE313F792d5840Be1Fa89b8f9961A6C2967a3D30c',
       abi.abi,
       signer
     );

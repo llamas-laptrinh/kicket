@@ -82,7 +82,7 @@ export default function ProfileView({ address }: ProfileViewProps) {
                       <button
                         disabled={nft.currentlyListed}
                         onClick={onToggleModal}
-                        className="w-full flex-1 border-r-2 opacity-40"
+                        className="w-full flex-1 border-r-2 disabled:opacity-40"
                       >
                         List for Sale
                       </button>

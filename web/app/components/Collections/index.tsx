@@ -11,22 +11,28 @@ import {
 import Image from 'next/image';
 import { filterCollections, filterInfo, types } from '@app/common/filters';
 import { allNFTs } from '@app/common/NFTs';
+import NftFactory from '@app/utils/contract/nft';
+import { getProvier } from '@app/utils/contract/getProvider';
 
 export default function Collections({ collectionId }: any) {
   const [traits, setTraits] = React.useState<typeof types>([]);
   const [collection, setCollection] = React.useState<typeof allNFTs>([]);
   const [collectionID, setCollectionID] = React.useState<string>(collectionId);
 
-  React.useEffect(() => {
+  const loadData = React.useCallback(async () => {
     const keyTraits: any[] = [];
     const valuesTraits: any[] = [];
+    const { signer } = await getProvier();
+    if (!signer) return;
+    const nfts = new NftFactory(signer);
+    const allNFTs = await nfts.getAllMyNfts();
 
-    const filterNftCollection = allNFTs.filter((nft) =>
-      collectionID.includes(nft.collectionId)
+    const filterNftCollection = allNFTs.filter(
+      (nft) => collectionID.includes(nft.collectionId) && nft.currentlyListed
     );
 
     filterNftCollection.forEach((nft) => {
-      nft.traits.forEach((t) => {
+      nft.traits.forEach((t: { type: any }) => {
         keyTraits.push(t.type);
         valuesTraits.push(t);
       });
@@ -46,6 +52,10 @@ export default function Collections({ collectionId }: any) {
     });
     setTraits(data);
     setCollection(filterNftCollection);
+  }, [collectionID]);
+
+  React.useEffect(() => {
+    loadData();
   }, [collectionID]);
 
   const onSort = (value: string) => {
