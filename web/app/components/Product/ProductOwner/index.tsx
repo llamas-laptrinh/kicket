@@ -10,10 +10,10 @@ type ProductOwnerProps = {
 export default function ProductOwner({ ownerAddress }: ProductOwnerProps) {
   const shortWallet = shorterAddress(ownerAddress);
   return (
-    <div className="flex">
-      <p className="text-gray-500">Owner by</p>
+    <div className="flex flex-wrap">
+      <p className="text-gray-500 hidden lg:block">Owner by</p>
       <Avatar
-        className="mx-4"
+        className="lg:mx-4 mr-4 ml-2"
         color="warning"
         rounded
         bordered

@@ -16,6 +16,7 @@ export default function ProductSaleCountdown({
     return () => {
       clearInterval(key);
     };
-  }, [countDownTimer]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return <p className="text-sm font-semibold my-2">Sale ends in {time}</p>;
 }

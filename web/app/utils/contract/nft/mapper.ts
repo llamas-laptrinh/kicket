@@ -32,6 +32,7 @@ const mapMetaToProduct = (item: any, meta: any) => {
     },
     traits: meta.attributes,
     logs: { activities: [], priceHistory: [] },
+    endSaleTime: new Date().getTime(),
   };
 };
 

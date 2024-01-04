@@ -18,7 +18,7 @@ export default function Studio() {
           <FaArrowRight className="w-4 h-4" />
         </section>
 
-        <a href="studio/mint">
+        <a href="/studio/mint">
           <section className="flex items-center p-6 rounded shadow-md mb-6">
             <div className="info flex-1">
               <h3 className="font-bold flex gap-2 items-center mb-2">

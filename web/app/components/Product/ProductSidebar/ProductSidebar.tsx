@@ -19,6 +19,9 @@ import { AVATAR_URL } from '@app/common';
 import Image from 'next/image';
 import Empty from '@app/components/Empty';
 import { countDownTimer } from '@app/utils/count-down-timer';
+import NftFactory from '@app/utils/contract/nft';
+import { getProvier } from '@app/utils/contract/getProvider';
+import { toast } from 'react-toastify';
 
 const dymmydata = {
   options: {
@@ -56,7 +59,7 @@ const createProductOptions = (
     : undefined;
 
 export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
-  const addItem = useAddItemToCart();
+  // const addItem = useAddItemToCart();
   const { openSidebar, openModalBackInStock } = useUI();
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState<number>(1);
@@ -108,17 +111,19 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
   const addToCart = async () => {
     setLoading(true);
     try {
-      await addItem({
-        quantity,
-        catalogReference: {
-          catalogItemId: product._id!,
-          appId: STORES_APP_ID,
-          ...createProductOptions(selectedOptions, selectedVariant),
-        },
-      });
+      const { signer } = await getProvier();
+      if (!signer) {
+        toast.error('Signer not found');
+        return;
+      }
+      const tokenId = Number(product.id);
+      const price = Number(product.price.price);
+
+      await new NftFactory(signer).buyNFT(tokenId, price);
       setLoading(false);
-      openSidebar();
-    } catch (err) {
+      // openSidebar();
+    } catch (err: any) {
+      toast.error(err.message);
       setLoading(false);
     }
   };
@@ -127,17 +132,17 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
     openModalBackInStock();
   };
 
-  const buyNowLink = useMemo(() => {
-    const productOptions = createProductOptions(
-      selectedOptions,
-      selectedVariant
-    );
-    return `/api/quick-buy/${product._id}?quantity=${quantity}&productOptions=${
-      productOptions
-        ? decodeURIComponent(JSON.stringify(productOptions.options))
-        : ''
-    }`;
-  }, [selectedOptions, selectedVariant, product._id, quantity]);
+  // const buyNowLink = useMemo(() => {
+  //   const productOptions = createProductOptions(
+  //     selectedOptions,
+  //     selectedVariant
+  //   );
+  //   return `/api/quick-buy/${product._id}?quantity=${quantity}&productOptions=${
+  //     productOptions
+  //       ? decodeURIComponent(JSON.stringify(productOptions.options))
+  //       : ''
+  //   }`;
+  // }, [selectedOptions, selectedVariant, product._id, quantity]);
 
   const x = countDownTimer(new Date('Jan 5, 2024 15:37:25'));
 
@@ -191,7 +196,7 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
           <a
             data-testid={testIds.PRODUCT_DETAILS.BUY_NOW_CTA}
             className="btn-main my-1 rounded block text-center"
-            href={buyNowLink}
+            href={`/auction/${product.id}`}
           >
             Place a bid
           </a>

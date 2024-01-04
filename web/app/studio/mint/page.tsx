@@ -238,7 +238,7 @@ export default function MintNFT() {
                         className="leading-md font-semibold text-sm leading-sm lg:text-md lg:leading-md"
                         data-id="TextBody"
                       >
-                        Drag and drop media
+                        Click to upload media
                       </span>
                       <span
                         className="text-sm leading-sm font-semibold text-blue-300"

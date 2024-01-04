@@ -25,6 +25,7 @@ contract NFTMarketplace is ERC721URIStorage {
         address payable seller;
         uint256 price;
         bool currentlyListed;
+        uint256 endSaleTime;
     }
 
     //the event emitted when a token is successfully listed
@@ -68,7 +69,8 @@ contract NFTMarketplace is ERC721URIStorage {
             payable(address(this)),
             payable(msg.sender),
             0,
-            false
+            false,
+            block.timestamp
         );
 
         emit TokenListedSuccess(
@@ -85,8 +87,12 @@ contract NFTMarketplace is ERC721URIStorage {
 
     receive() external payable {}
 
-    function listToken(uint256 tokenId, uint256 price) public payable {
-        createListedToken(tokenId, price);
+    function listToken(
+        uint256 tokenId,
+        uint256 price,
+        uint256 endSaleTime
+    ) public payable {
+        createListedToken(tokenId, price, endSaleTime);
     }
 
     function unListToken(uint256 tokenId) public {
@@ -94,7 +100,11 @@ contract NFTMarketplace is ERC721URIStorage {
         idToListedToken[tokenId].currentlyListed = false;
     }
 
-    function createListedToken(uint256 tokenId, uint256 price) private {
+    function createListedToken(
+        uint256 tokenId,
+        uint256 price,
+        uint256 endSaleTime
+    ) private {
         //Make sure the sender sent enough ETH to pay for listing
         require(msg.value == listPrice, "Hopefully sending the correct price");
         //Just sanity check
@@ -108,7 +118,7 @@ contract NFTMarketplace is ERC721URIStorage {
 
         idToListedToken[tokenId].currentlyListed = true;
         idToListedToken[tokenId].price = price;
-
+        idToListedToken[tokenId].endSaleTime = endSaleTime;
         _transfer(msg.sender, address(this), tokenId);
         //Emit the event for successful transfer. The frontend parses this message and updates the end user
         emit TokenListedSuccess(
@@ -175,6 +185,10 @@ contract NFTMarketplace is ERC721URIStorage {
     function executeSale(uint256 tokenId) public payable {
         uint price = idToListedToken[tokenId].price;
         address seller = idToListedToken[tokenId].seller;
+        require(
+            block.timestamp > idToListedToken[tokenId].endSaleTime,
+            "Sale time was ended"
+        );
         require(
             msg.value == price,
             "Please submit the asking price in order to complete the purchase"

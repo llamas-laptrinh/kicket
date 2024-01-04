@@ -40,15 +40,15 @@ export function ProductView({
           data-testid={testIds.PRODUCT_DETAILS.CONTAINER}
         >
           <div className="flex flex-col sm:flex-row gap-6">
-            <div className="box-border flex flex-col basis-1/2">
-              <div>
+            <div className="box-border flex flex-col lg:basis-1/2">
+              <div className="w-full h-full">
                 <ImageGalleryClient
                   product={product}
                   items={product.media!.items!}
                 />
               </div>
             </div>
-            <div className="flex flex-col w-full h-full basis-1/2 text-left">
+            <div className="flex flex-col w-full h-full lg:basis-1/2 text-left">
               <ProductSidebar key={product._id} product={product} />
             </div>
           </div>

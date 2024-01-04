@@ -10,7 +10,7 @@ export default class NftFactory {
   protected contract: ethers.Contract;
   constructor(signer: ethers.ContractRunner) {
     this.contract = new ethers.Contract(
-      '0x2c9cdB94F120940cC31371a2fEe005B7A04959e4',
+      '0x5135dAE679EFf30285719B6D016f0F6035a52F8a',
       abi.abi,
       signer
     );
@@ -41,7 +41,7 @@ export default class NftFactory {
     );
     return items;
   }
-  async buyNFT(tokenId: string, salePrice: string) {
+  async buyNFT(tokenId: number, salePrice: number) {
     const transaction = await this.contract.executeSale(tokenId, {
       value: salePrice,
     });
@@ -70,5 +70,11 @@ export default class NftFactory {
     );
     return items;
   }
-  async listToSale(tokenId: string, price: string) {}
+  async listToSale(tokenId: number, price: number, endSaleTime: number) {
+    const tx = await this.contract.listToken(tokenId, price, endSaleTime, {
+      gasLimit: 3000000,
+      value: ethers.parseUnits('0.01', 'ether'),
+    });
+    return tx.wait();
+  }
 }

@@ -37,31 +37,31 @@ export function ImageGalleryClient({
             />
           ))}
         </Carousel>
-        <section className="mt-4">
-          <h2 className="my-2">Description</h2>
-          <p> {product.description}</p>
-        </section>
-        <section className="mt-4">
-          <h2 className="my-2">Attributes</h2>
-          <hgroup className="hide-scrollbar flex w-full flex-wrap overflow-y-auto h-full pb-4">
-            {product.traits.map((attribute: any) => {
-              return (
-                <Card className="my-2 mr-2" key={attribute.type}>
-                  <div className="flex flex-col gap-y-1">
-                    <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                      {attribute.type}
-                    </h5>
-                    <p className="text-xs font-normal text-gray-700 dark:text-gray-400">
-                      {attribute.name}
-                    </p>
-                    {/* <Badge color="gray">0.01%</Badge> */}
-                  </div>
-                </Card>
-              );
-            })}
-          </hgroup>
-        </section>
       </Flowbite>
+      <section className="mt-4 hidden lg:block">
+        <h2 className="my-2">Description</h2>
+        <p> {product.description}</p>
+      </section>
+      <section className="mt-4 hidden lg:block">
+        <h2 className="my-2">Attributes</h2>
+        <hgroup className="hide-scrollbar flex w-full flex-wrap overflow-y-auto h-full pb-4">
+          {product.traits.map((attribute: any) => {
+            return (
+              <Card className="my-2 mr-2" key={attribute.type}>
+                <div className="flex flex-col gap-y-1">
+                  <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+                    {attribute.type}
+                  </h5>
+                  <p className="text-xs font-normal text-gray-700 dark:text-gray-400">
+                    {attribute.name}
+                  </p>
+                  {/* <Badge color="gray">0.01%</Badge> */}
+                </div>
+              </Card>
+            );
+          })}
+        </hgroup>
+      </section>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import type { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { useSDK } from '@metamask/sdk-react';
 
 const navbarMainItems = [
   { ref: '/', label: 'HOME' },
@@ -39,6 +40,8 @@ export function NavBar() {
   const [isMenuShown, setIsMenuShown] = useState(false);
   const pathname = usePathname();
   const [linkRef, setLinkRef] = useState<LinkProps['href']>(pathname!);
+  const { account } = useSDK();
+
   const toggleOpen = useCallback(
     () => setIsMenuShown(!isMenuShown),
     [isMenuShown]
@@ -62,7 +65,7 @@ export function NavBar() {
                 'block h-[4px] w-8 transform transition duration-500 ease-in-out ' +
                 className
               }
-            ></span>
+            />
           ))}
         </div>
       </button>
@@ -91,13 +94,9 @@ export function NavBar() {
               <StyledNavLink
                 className="text-lg"
                 isActive={ref === linkRef}
-                href={
-                  ref === '/profile'
-                    ? `${ref}/0x3e45A0808D74a6Bb380A431660516559FE6ae988`
-                    : ref
-                }
+                href={ref === '/profile' ? `${ref}/${account}` : ref}
                 onClick={() => {
-                  setLinkRef(ref);
+                  // setLinkRef(ref);
                   setIsMenuShown(false);
                 }}
               >
