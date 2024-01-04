@@ -1,6 +1,4 @@
-import { getWixClient } from '@app/hooks/useWixClientServer';
 import { ProductView } from '@app/components/Product/ProductView';
-import { dummyProducts } from '@app/common';
 
 export default async function StoresCategoryPage({ params }: any) {
   if (!params.slug) {
@@ -13,8 +11,8 @@ export default async function StoresCategoryPage({ params }: any) {
   //   .limit(1)
   //   .find();
   // const product = items[0];
-  const product = dummyProducts[0];
-  return <ProductView product={product} />;
+
+  return <ProductView tokenId={params.slug} />;
 }
 
 // export async function generateStaticParams(): Promise<{ slug?: string }[]> {

@@ -10,7 +10,7 @@ export default class NftFactory {
   protected contract: ethers.Contract;
   constructor(signer: ethers.ContractRunner) {
     this.contract = new ethers.Contract(
-      '0xE313F792d5840Be1Fa89b8f9961A6C2967a3D30c',
+      '0x2c9cdB94F120940cC31371a2fEe005B7A04959e4',
       abi.abi,
       signer
     );
@@ -29,12 +29,9 @@ export default class NftFactory {
   }
   async getAllNfts() {
     let transaction = await this.contract.getAllNFTs();
-    //Fetch all the details of every NFT from the contract and display
     const items = await Promise.all(
       transaction.map(async (i: any) => {
-        let tokenURI = await this.contract.tokenURI(i.tokenId);
-        console.log('getting this tokenUri', tokenURI);
-        // tokenURI = GetIpfsUrlFromPinata(tokenURI);
+        const tokenURI = await this.contract.tokenURI(i.tokenId);
         let meta: any = await axios.get(tokenURI);
         meta = meta.data;
         console.log('meta', meta);
@@ -45,12 +42,18 @@ export default class NftFactory {
     return items;
   }
   async buyNFT(tokenId: string, salePrice: string) {
-    let transaction = await this.contract.executeSale(tokenId, {
+    const transaction = await this.contract.executeSale(tokenId, {
       value: salePrice,
     });
     return await transaction.wait();
   }
-  async getNftData(tokenId: string) {}
+  async getNftData(tokenId: number) {
+    const tokenURI = await this.contract.tokenURI(tokenId);
+    const listedToken = await this.contract.getListedTokenForId(tokenId);
+    let meta = await axios.get(tokenURI);
+    meta = meta.data;
+    return mapMetaToProduct(listedToken, meta);
+  }
   async getAllMyNfts() {
     const transaction = await this.contract.getMyNFTs();
     const items = await Promise.all(

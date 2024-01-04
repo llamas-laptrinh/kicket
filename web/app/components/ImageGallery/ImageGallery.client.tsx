@@ -3,7 +3,13 @@ import { Card, Carousel, Flowbite, useTheme, Badge } from 'flowbite-react';
 import { products } from '@wix/stores';
 import { PLACEHOLDER_IMAGE } from '@app/constants';
 import { WixMediaImage } from '@app/components/Image/WixMediaImage';
-export function ImageGalleryClient({ items }: { items: products.MediaItem[] }) {
+export function ImageGalleryClient({
+  items,
+  product,
+}: {
+  items: products.MediaItem[];
+  product: any;
+}) {
   const { theme } = useTheme();
   const images = items.length ? items : [{ image: { url: PLACEHOLDER_IMAGE } }];
   return (
@@ -33,23 +39,22 @@ export function ImageGalleryClient({ items }: { items: products.MediaItem[] }) {
         </Carousel>
         <section className="mt-4">
           <h2 className="my-2">Description</h2>
-          <p>By DeLabs 10,000 of the most degenerate gods in the universe.</p>
-          <p>By DeLabs 10,000 of the most degenerate gods in the universe.</p>
+          <p> {product.description}</p>
         </section>
         <section className="mt-4">
           <h2 className="my-2">Attributes</h2>
           <hgroup className="hide-scrollbar flex w-full flex-wrap overflow-y-auto h-full pb-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((attribute) => {
+            {product.traits.map((attribute: any) => {
               return (
-                <Card className="my-2 mr-2" key={attribute}>
+                <Card className="my-2 mr-2" key={attribute.type}>
                   <div className="flex flex-col gap-y-1">
                     <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                      Generation
+                      {attribute.type}
                     </h5>
                     <p className="text-xs font-normal text-gray-700 dark:text-gray-400">
-                      default
+                      {attribute.name}
                     </p>
-                    <Badge color="gray">0.01%</Badge>
+                    {/* <Badge color="gray">0.01%</Badge> */}
                   </div>
                 </Card>
               );

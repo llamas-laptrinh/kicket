@@ -3,10 +3,12 @@ import { shorterAddress } from '@app/utils/addrress-formatter';
 import { Avatar } from 'flowbite-react';
 import React from 'react';
 
-export default function ProductOwner() {
-  const shortWallet = shorterAddress(
-    '0x3e45A0808D74a6Bb380A431660516559FE6ae988'
-  );
+type ProductOwnerProps = {
+  ownerAddress: string;
+};
+
+export default function ProductOwner({ ownerAddress }: ProductOwnerProps) {
+  const shortWallet = shorterAddress(ownerAddress);
   return (
     <div className="flex">
       <p className="text-gray-500">Owner by</p>

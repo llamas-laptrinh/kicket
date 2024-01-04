@@ -13,6 +13,13 @@ const mapMetaToProduct = (item: any, meta: any) => {
     collectionId: 'cyberpunk',
     external_url: meta?.external_url,
     media: {
+      items: [
+        {
+          title: meta?.name,
+          _id: Number(item.tokenId),
+          image: { url: meta?.image },
+        },
+      ],
       altText: meta?.name,
       url: meta?.image,
     },
@@ -24,6 +31,7 @@ const mapMetaToProduct = (item: any, meta: any) => {
       price: price,
     },
     traits: meta.attributes,
+    logs: { activities: [], priceHistory: [] },
   };
 };
 

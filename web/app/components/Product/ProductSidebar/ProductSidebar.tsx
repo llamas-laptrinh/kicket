@@ -17,9 +17,10 @@ import ProductSaleCountdown from '../ProductSaleCountdown';
 import ProductPriceHistory from '../ProducPriceHistory';
 import { AVATAR_URL } from '@app/common';
 import Image from 'next/image';
+import Empty from '@app/components/Empty';
 
 interface ProductSidebarProps {
-  product: products.Product;
+  product: products.Product | any;
   className?: string;
 }
 
@@ -48,7 +49,7 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
     currencyCode: product.price!.currency!,
   });
 
-  const usdPrice = 166;
+  const usdPrice = product.price.price * 0.77;
   // useEffect(() => {
   //   if (
   //     product.manageVariants &&
@@ -126,7 +127,7 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
         sku={product.sku ?? undefined}
       />
       <section className="mt-2">
-        <ProductOwner />
+        <ProductOwner ownerAddress={product.owner} />
       </section>
 
       <section className="my-2">
@@ -199,68 +200,46 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
       <div className="mt-6">
         <h2 className="my-2">Activity</h2>
         <hgroup className="hide-scrollbar flex flex-col w-full overflow-y-auto h-96 pb-4">
-          {[1, 2, 3, 4, 5, 6, 7].map((item) => {
-            return (
-              <div className="mb-4" key={item}>
-                <div className="flex w-full">
-                  <div className="mr-4">
-                    <Avatar size="md" rounded img={`${AVATAR_URL}`} />
+          {product.logs.activities.length === 0 ? (
+            <Empty />
+          ) : (
+            product.logs.activities.map((item: any) => {
+              return (
+                <div className="mb-4" key={item}>
+                  <div className="flex w-full">
+                    <div className="mr-4">
+                      <Avatar size="md" rounded img={`${AVATAR_URL}`} />
+                    </div>
+                    <hgroup className="mr-8">
+                      <h5 className="text-md font-bold tracking-tight text-gray-500 dark:text-white">
+                        Buy now price set by{' '}
+                        <span className="text-black">0x3e45...ae988</span>
+                      </h5>
+                      <p className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                        Dec 7, 2023 at 14:52 pm
+                      </p>
+                    </hgroup>
+                    <hgroup className="flex items-center">
+                      <span className="mr-4 text-end">
+                        <p>2.0 VIC</p>
+                        <span className="text-gray-500">$166</span>
+                      </span>
+                      <a href="#">
+                        <Image
+                          className="text-black w-5"
+                          width={24}
+                          height={24}
+                          src="/open-outline.svg"
+                          alt="open"
+                        />
+                      </a>
+                    </hgroup>
                   </div>
-                  <hgroup className="mr-8">
-                    <h5 className="text-md font-bold tracking-tight text-gray-500 dark:text-white">
-                      Buy now price set by{' '}
-                      <span className="text-black">0x3e45...ae988</span>
-                    </h5>
-                    <p className="text-xs font-normal text-gray-500 dark:text-gray-400">
-                      Dec 7, 2023 at 14:52 pm
-                    </p>
-                  </hgroup>
-                  <hgroup className="flex items-center">
-                    <span className="mr-4 text-end">
-                      <p>2.0 VIC</p>
-                      <span className="text-gray-500">$166</span>
-                    </span>
-                    <a href="#">
-                      <Image
-                        className="text-black w-5"
-                        width={24}
-                        height={24}
-                        src="/open-outline.svg"
-                        alt="open"
-                      />
-                    </a>
-                  </hgroup>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </hgroup>
-        {/* <Flowbite
-          theme={{
-            theme: {
-              accordion: {
-                content: { base: 'bg-transparent p-5' },
-                title: {
-                  heading: 'text-black',
-                  arrow: {
-                    base: 'text-black',
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <Accordion flush={true}>
-            {product.additionalInfoSections!.map((info) => (
-              <Accordion.Panel>
-                <Accordion.Title>
-                  <span className="text-sm">Activities</span>
-                </Accordion.Title>
-                <Accordion.Content></Accordion.Content>
-              </Accordion.Panel>
-            ))}
-          </Accordion>
-        </Flowbite> */}
       </div>
     </>
   );

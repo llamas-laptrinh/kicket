@@ -4,7 +4,7 @@ import { expect } from "chai";
 
 const metadataURL =
   "https://lavender-cautious-ant-106.mypinata.cloud/ipfs/QmQQ6RCNCDphmnP45nnfAShRz1N3EqZygEVuKMLBmtdE1E?pinataGatewayToken=hmcS97lnQbaQI8TIiAmLLpF7cRxrPDWW2N1KsMTqsE5SsKdG74eyTqqBKk4wTfME";
-const marketAddress = "0xE313F792d5840Be1Fa89b8f9961A6C2967a3D30c";
+const marketAddress = "0x2c9cdB94F120940cC31371a2fEe005B7A04959e4";
 describe("Marketplace", () => {
   let marketplace: NFTMarketplace;
   let tokenId: any = 1;
@@ -23,16 +23,14 @@ describe("Marketplace", () => {
     console.log(tx);
   });
 
-  // it("mint NFT", async () => {
-  //   let transaction = await marketplace.createToken(metadataURL, {
-  //     gasLimit: 3000000,
-  //   });
-  //   await transaction.wait();
-  // });
-
-  it("get my NFTs after mint", async () => {
+  it("mint NFT", async () => {
+    let transaction = await marketplace.createToken(metadataURL, {
+      gasLimit: 3000000,
+    });
+    await transaction.wait();
     const tx = await marketplace.getMyNFTs();
     console.log(tx);
+    expect(tx.length).greaterThan(0);
   });
 
   it("list NFT", async () => {

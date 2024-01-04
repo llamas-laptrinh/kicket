@@ -56,6 +56,7 @@ export default function Collections({ collectionId }: any) {
 
   React.useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectionID]);
 
   const onSort = (value: string) => {
@@ -172,7 +173,7 @@ export default function Collections({ collectionId }: any) {
               {collection.map(({ id, description, name, media, price }) => {
                 return (
                   <a
-                    href={`/product-page/${name}`}
+                    href={`/product-page/${id}`}
                     key={id}
                     className="flex flex-col max-w-sm bg-black text-white rounded"
                   >
