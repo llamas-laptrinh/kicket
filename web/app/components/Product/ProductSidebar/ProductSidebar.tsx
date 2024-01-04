@@ -18,7 +18,26 @@ import ProductPriceHistory from '../ProducPriceHistory';
 import { AVATAR_URL } from '@app/common';
 import Image from 'next/image';
 import Empty from '@app/components/Empty';
+import { countDownTimer } from '@app/utils/count-down-timer';
 
+const dymmydata = {
+  options: {
+    chart: {
+      id: 'apexchart-example',
+    },
+    xaxis: {
+      // categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+      categories: [],
+    },
+  },
+  series: [
+    {
+      name: 'series-1',
+      data: [],
+      // data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+    },
+  ],
+};
 interface ProductSidebarProps {
   product: products.Product | any;
   className?: string;
@@ -75,15 +94,16 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
   // }, [product]);
 
   const isAvailableForPurchase = useMemo(() => {
-    if (!product.manageVariants && product.stock?.inStock) {
-      return true;
-    }
-    if (!product.manageVariants && !product.stock?.inStock) {
-      return false;
-    }
+    // if (!product.manageVariants && product.stock?.inStock) {
+    //   return true;
+    // }
+    // if (!product.manageVariants && !product.stock?.inStock) {
+    //   return false;
+    // }
 
-    return selectedVariant?.stock?.inStock;
-  }, [selectedVariant, product]);
+    // return selectedVariant?.stock?.inStock;
+    return true;
+  }, []);
 
   const addToCart = async () => {
     setLoading(true);
@@ -118,6 +138,8 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
         : ''
     }`;
   }, [selectedOptions, selectedVariant, product._id, quantity]);
+
+  const x = countDownTimer(new Date('Jan 5, 2024 15:37:25'));
 
   return (
     <>
@@ -176,8 +198,8 @@ export const ProductSidebar: FC<ProductSidebarProps> = ({ product }) => {
           {/* </div> */}
         </div>
       ) : null}
-      <ProductSaleCountdown />
-      <ProductPriceHistory />
+      <ProductSaleCountdown countDownTimer={x} />
+      <ProductPriceHistory data={dymmydata} />
       {!isAvailableForPurchase ? (
         <div>
           <BackInStockFormModal

@@ -1,19 +1,21 @@
-import { countDownTimer } from '@app/utils/count-down-timer';
 import React from 'react';
 
-type ProductSaleCountdownProps = () => {};
-const x = countDownTimer(new Date('Jan 5, 2024 15:37:25'));
+type ProductSaleProps = {
+  countDownTimer: () => string;
+};
 
-export default function ProductSaleCountdown() {
+export default function ProductSaleCountdown({
+  countDownTimer,
+}: ProductSaleProps) {
   const [time, setTime] = React.useState('20d 2h 5m');
   React.useEffect(() => {
     const key = setInterval(() => {
-      const timeString = x();
+      const timeString = countDownTimer();
       setTime(timeString);
     }, 1000);
     return () => {
       clearInterval(key);
     };
-  }, []);
+  }, [countDownTimer]);
   return <p className="text-sm font-semibold my-2">Sale ends in {time}</p>;
 }
